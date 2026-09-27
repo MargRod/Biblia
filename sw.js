@@ -1,12 +1,12 @@
 // Guarda la Biblia en el teléfono para que funcione sin internet.
 // Si cambias index.html, sube el número de versión para que los teléfonos se actualicen.
-const CACHE = "biblia-v1";
+const CACHE = "biblia-v2";
 const FILES = ["./", "./index.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png", "./maskable-512.png",
   "./apple-touch-icon.png", "./favicon.png"];
 
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(f, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", e => {

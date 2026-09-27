@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5856D6">
 <title>Santa Biblia · Reina-Valera 1909</title>
 <meta name="description" content="La Biblia completa Reina-Valera 1909: lectura cómoda, búsqueda, resaltados, notas y planes de lectura.">
-<meta name="theme-color" content="#5856D6">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Biblia">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -307,6 +306,12 @@ textarea.note-in{width:100%;min-height:150px;border-radius:16px;border:0;backgro
 @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (min-width:700px){.hero h1{font-size:52px}.wrap{padding:0 28px}}
+
+.set-h{font-size:15px;color:var(--text2);font-weight:800;margin:4px 2px 10px}
+.accents{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:10px;margin-bottom:4px}
+.accents button{aspect-ratio:1;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 2px transparent}
+.accents button[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--text)}
+.acc-name{color:var(--text2);font-size:14.5px;margin:6px 2px 12px}
 </style>
 </head>
 <body>
@@ -577,11 +582,23 @@ async function initSync(){
 
 /* ---------- preferencias y tema ---------- */
 const root=document.documentElement;
+const ACCENTS=[["original","Original",null,null],["azul","Azul","#007AFF","#0A84FF"],["turquesa","Turquesa","#0E7C86","#40C8E0"],["verde","Verde","#248A3D","#30D158"],
+  ["naranja","Naranja","#C75300","#FF9F0A"],["marron","Marrón","#9A5B2E","#D39A6A"],["rosa","Rosa","#D1234F","#FF6482"],["rojo","Rojo","#D70015","#FF453A"],["morado","Morado","#8944AB","#BF5AF2"],["grafito","Grafito","#48484A","#C7C7CC"]];
+const darkMQ=matchMedia("(prefers-color-scheme: dark)");
+const rgba=(h,a)=>{const n=parseInt(h.slice(1),16);return "rgba("+(n>>16)+","+(n>>8&255)+","+(n&255)+","+a+")"};
 function applyPrefs(){
   const fs=P.get("fs",21),th=P.get("theme","auto");
   root.style.setProperty("--fs",fs+"px");
   if(th==="auto")root.removeAttribute("data-theme");else root.setAttribute("data-theme",th);
+  const dark=th==="dark"||(th==="auto"&&darkMQ.matches);
+  const a=ACCENTS.find(x=>x[0]===P.get("accent","original"));
+  if(a&&a[2]){const c=dark?a[3]:a[2];
+    root.style.setProperty("--accent",c);root.style.setProperty("--accent-soft",rgba(c,dark?.2:.12));
+    root.style.setProperty("--flash",rgba(c,dark?.28:.18));root.style.setProperty("--on-accent",dark?"#0A0A14":"#FFFFFF");}
+  else["--accent","--accent-soft","--flash","--on-accent"].forEach(p=>root.style.removeProperty(p));
+  const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.content=getComputedStyle(root).getPropertyValue("--accent").trim()||"#5856D6";
 }
+if(darkMQ.addEventListener)darkMQ.addEventListener("change",applyPrefs);
 applyPrefs();
 
 /* ---------- toast ---------- */
@@ -621,6 +638,7 @@ function settingsHTML(){
   '<div class="size"><button id="smaller" aria-label="Letra más pequeña" style="font-size:15px">A</button><input type="range" id="range" min="16" max="34" step="1" value="'+P.get("fs",21)+'" aria-label="Tamaño de letra"><button id="bigger" aria-label="Letra más grande" style="font-size:24px">A</button></div>'+
   '<div class="themes" id="themes">'+[["auto","Auto",'background:linear-gradient(135deg,#fff 50%,#1C1C1E 50%);color:#5856D6',"A"],["light","Claro","background:#fff;color:#000","Aa"],["sepia","Sepia","background:#F7EEDC;color:#3A2E1E","Aa"],["dark","Oscuro","background:#1C1C1E;color:#F5F5F7","Aa"]]
     .map(x=>'<button data-t="'+x[0]+'" aria-pressed="'+(th===x[0])+'"><i style="'+x[2]+'">'+x[3]+'</i>'+x[1]+'</button>').join("")+'</div>'+
+  '<h3 class="set-h">Color de acento</h3><div class="accents" id="accents">'+ACCENTS.map(a=>'<button data-a="'+a[0]+'" aria-label="'+a[1]+'" title="'+a[1]+'" aria-pressed="'+(P.get("accent","original")===a[0])+'" style="background:'+(a[2]?'linear-gradient(135deg,'+a[2]+' 50%,'+a[3]+' 50%)':'linear-gradient(135deg,#5856D6 50%,#A5572C 50%)')+'"></button>').join("")+'</div><p class="acc-name" id="accName">'+ACCENTS.find(a=>a[0]===P.get("accent","original"))[1]+'</p>'+
   tg("tCont",P.get("cont",false),"Lectura continua","Al llegar al final, sigue el próximo capítulo sin tocar nada")+
   tg("tPar",P.get("par",false),"Mostrar también en inglés","King James (1769) debajo de cada versículo")+
   '<div class="sync'+(sync.status==="ok"?" ok":"")+'"><i></i>'+(sync.status==="ok"?"Resaltados, notas y planes sincronizados con tu cuenta":"Tus resaltados, notas y planes se guardan en este teléfono")+'</div>';
@@ -632,6 +650,7 @@ function openSettings(){
     el.querySelector("#smaller").onclick=()=>setFs(P.get("fs",21)-1);
     el.querySelector("#bigger").onclick=()=>setFs(P.get("fs",21)+1);
     el.querySelector("#themes").onclick=e=>{const b=e.target.closest("button");if(!b)return;P.set("theme",b.dataset.t);applyPrefs();el.querySelectorAll("#themes button").forEach(x=>x.setAttribute("aria-pressed",x===b))};
+    el.querySelector("#accents").onclick=e=>{const b=e.target.closest("button");if(!b)return;P.set("accent",b.dataset.a);applyPrefs();el.querySelectorAll("#accents button").forEach(x=>x.setAttribute("aria-pressed",x===b));el.querySelector("#accName").textContent=b.title};
     el.querySelector("#tCont").onclick=e=>{const on=!P.get("cont",false);P.set("cont",on);e.currentTarget.setAttribute("aria-checked",on);if(cur)route()};
     el.querySelector("#tPar").onclick=async e=>{const on=!P.get("par",false);P.set("par",on);e.currentTarget.setAttribute("aria-checked",on);if(on)await loadKJV();if(cur)rerenderReaderKeep()};
   });
@@ -941,7 +960,7 @@ fq.onkeydown=e=>{if(e.key==="Enter"){const r=parseRef(fq.value);if(r){e.preventD
 function goFinder(h){closeFinder();if(location.hash===h)route();else location.hash=h}
 $("fbody").addEventListener("click",e=>{
   const g=e.target.closest("[data-fgo]");if(g){goFinder(g.dataset.fgo);return}
-  const bb=e.target.closest("[data-fb]");if(bb){fstate={b:+bb.dataset.fb,c:null};if(DATA[fstate.b].length===1)fstate.c=1;renderFinder();$("finder").querySelector(".f-body").scrollTop=0;return}
+  const bb=e.target.closest("[data-fb]");if(bb){fq.value="";$("fqc").hidden=true;fq.blur();fstate={b:+bb.dataset.fb,c:null};if(DATA[fstate.b].length===1)fstate.c=1;renderFinder();$("finder").querySelector(".f-body").scrollTop=0;return}
   const cb=e.target.closest("[data-fc]");if(cb){fstate.c=+cb.dataset.fc;renderFinder();$("finder").querySelector(".f-body").scrollTop=0;return}
   const bk=e.target.closest("[data-fback]");if(bk){if(fstate.c&&DATA[fstate.b].length>1)fstate.c=null;else fstate={b:null,c:null};renderFinder();return}
 });
