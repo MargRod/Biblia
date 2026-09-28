@@ -1,6 +1,6 @@
 // Guarda la Biblia en el teléfono para que funcione sin internet.
 // Si cambias index.html, sube el número de versión para que los teléfonos se actualicen.
-const CACHE = "biblia-v2";
+const CACHE = "biblia-v6";
 const FILES = ["./", "./index.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png", "./maskable-512.png",
   "./apple-touch-icon.png", "./favicon.png"];
