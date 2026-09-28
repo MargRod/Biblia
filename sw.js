@@ -1,12 +1,14 @@
 // Guarda la Biblia en el teléfono para que funcione sin internet.
-// Si cambias index.html, sube el número de versión para que los teléfonos se actualicen.
-const CACHE = "biblia-v6";
+// 6f18acc30f lo reemplaza scripts/build.py con un hash del index.html: cada build nuevo actualiza los teléfonos.
+const CACHE = "biblia-6f18acc30f";
 const FILES = ["./", "./index.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png", "./maskable-512.png",
-  "./apple-touch-icon.png", "./favicon.png"];
+  "./apple-touch-icon.png", "./favicon.png", "./privacidad.html"];
 
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(f, { cache: "reload" })))).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE)
+    .then(c => c.addAll(FILES.map(f => new Request(f, { cache: "reload" }))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", e => {
@@ -18,8 +20,13 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
+  // Solo se guardan la app, las fuentes y la librería de Firebase (gstatic).
+  // Nunca la base de datos ni el inicio de sesión: eso siempre va a internet.
+  const url = new URL(req.url);
+  if (url.origin !== location.origin && !/^(fonts\.googleapis\.com|fonts\.gstatic\.com|www\.gstatic\.com)$/.test(url.hostname)) return;
   if (req.mode === "navigate") {
-    e.respondWith(caches.match("./index.html").then(r => r || fetch(req)));
+    e.respondWith(caches.match(req, { ignoreSearch: true })
+      .then(r => r || caches.match("./index.html")).then(r => r || fetch(req)));
     return;
   }
   e.respondWith(caches.match(req).then(hit => {
