@@ -211,6 +211,8 @@ body.reading .tabs{background:var(--bar-paper)}
 .f-input input::-webkit-search-cancel-button{display:none}
 .f-input input::placeholder{color:var(--text2)}
 .f-input > svg{position:absolute;left:13px;top:13px;color:var(--text2)}
+.nsearch{margin:0 0 14px}
+.nsearch input{background:var(--card)}
 .f-input .clear{position:absolute;right:10px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--text3);color:var(--card);display:grid;place-items:center;font-size:13px;font-weight:900}
 .f-cancel{color:var(--accent);font-size:17px;font-weight:700;padding:8px 2px}
 .f-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 0 calc(30px + env(safe-area-inset-bottom,0px))}
@@ -220,6 +222,7 @@ body.reading .tabs{background:var(--bar-paper)}
 .crumbs{color:var(--text2);font-size:15px;margin:0 0 10px}
 .bookchips{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-bottom:22px}
 .bookchips button{background:var(--card);border-radius:14px;min-height:50px;padding:6px 8px;font-size:15.5px;font-weight:700;line-height:1.15}
+.bookchips button.long{font-size:13.5px;letter-spacing:-.2px;padding:6px 3px;white-space:nowrap} /* 1 y 2 Tesalonicenses: en 2 líneas se veían partidos */
 .bookchips button.cur{background:var(--accent);color:var(--on-accent)}
 .bookchips button:active{background:var(--accent-soft)}
 .f-sub{font-size:17px;font-weight:900;margin:4px 4px 10px;color:var(--text2)}
@@ -227,7 +230,7 @@ body.reading .tabs{background:var(--bar-paper)}
 .wide-btn.soft{background:var(--fill);color:var(--accent)}
 .results-h{font-size:15px;color:var(--text2);margin:20px 4px 8px}
 .res{display:block;width:100%;text-align:left;padding:14px 18px;position:relative}
-.res + .res::before{content:"";position:absolute;left:18px;right:0;top:0;border-top:.5px solid var(--sep)}
+.res:not([hidden]) ~ .res::before{content:"";position:absolute;left:18px;right:0;top:0;border-top:.5px solid var(--sep)}
 .res:active{background:var(--fill)}
 .res b{color:var(--accent);font-size:16px;font-weight:800}
 .res p{margin:3px 0 0;font-size:18px;line-height:1.45}
@@ -279,6 +282,11 @@ body.reading .tabs{background:var(--bar-paper)}
 .who div{min-width:0}
 .who b{display:block;font-size:17px}
 .who small{display:block;color:var(--text2);font-size:14.5px;overflow:hidden;text-overflow:ellipsis}
+.remind{margin-bottom:18px}
+.rtime{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--sep);border-radius:16px;padding:6px 8px 6px 16px;margin-bottom:10px;font-size:17px;font-weight:800}
+.rtime input{font:inherit;font-size:19px;font-weight:800;color:var(--accent);background:var(--fill);border:0;border-radius:12px;padding:8px 12px}
+.rbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rbtns .gbtn{font-size:16px;padding:13px 10px}
 .gout{width:100%;padding:13px;border-radius:16px;background:var(--fill);color:#FF3B30;font-size:16px;font-weight:800}
 .gdel{display:block;margin:12px auto 0;color:var(--text2);font-size:14px;font-weight:700;text-decoration:underline}
 textarea.note-in{width:100%;min-height:150px;border-radius:16px;border:0;background:var(--fill);color:var(--text);font:inherit;font-size:18px;padding:14px;resize:vertical;line-height:1.45}
@@ -315,8 +323,15 @@ textarea.note-in{width:100%;min-height:150px;border-radius:16px;border:0;backgro
 .linkbtn{color:#FF3B30;font-weight:700;font-size:16px;padding:14px;display:block;margin:10px auto 0}
 
 .toast{position:fixed;left:50%;bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 20px);z-index:80;transform:translate(-50%,20px);opacity:0;
-  background:var(--text);color:var(--paper);padding:12px 20px;border-radius:24px;font-weight:700;font-size:16px;transition:all .25s;pointer-events:none;white-space:nowrap}
+  background:var(--text);color:var(--paper);padding:12px 20px;border-radius:24px;font-weight:700;font-size:16px;transition:all .25s;pointer-events:none;width:max-content;max-width:calc(100vw - 32px);text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.upd{position:fixed;left:12px;right:12px;max-width:520px;margin:0 auto;bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 12px);z-index:79;display:flex;align-items:center;gap:10px;
+  background:var(--text);color:var(--paper);padding:8px 8px 8px 18px;border-radius:22px;font-weight:800;font-size:16px;box-shadow:0 8px 28px rgba(0,0,0,.25);
+  transform:translateY(20px);opacity:0;transition:all .3s}
+.upd.show{transform:none;opacity:1}
+.upd span{flex:1}
+.upd #updGo{background:var(--accent);color:var(--on-accent);padding:10px 16px;border-radius:16px;font-weight:800}
+.upd .x{width:34px;height:34px;border-radius:50%;opacity:.6;font-size:15px}
 .loading{min-height:70vh;display:grid;place-items:center;color:var(--text2);font-size:18px;text-align:center}
 .spin{width:44px;height:44px;border-radius:50%;border:4px solid var(--fill);border-top-color:var(--accent);margin:0 auto 16px;animation:spin .9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -515,6 +530,7 @@ const SLUG={};BOOKS.forEach((b,i)=>{b.slug=norm(b[0]).replace(/\s+/g,"-");SLUG[b
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const $=id=>document.getElementById(id);
 const chev='<svg class="chev" width="9" height="15" viewBox="0 0 9 15" fill="none"><path d="m1.5 1.5 6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const searchIco='<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="6.5" stroke="currentColor" stroke-width="2.4"/><path d="m13.5 13.5 5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
 const backIco='<svg width="11" height="19" viewBox="0 0 13 22" fill="none"><path d="M11 2 2 11l9 9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const ICO={
   note:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 20h4L19 9l-4-4L4 16v4Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></svg>',
@@ -760,7 +776,38 @@ function settingsHTML(){
   '<h3 class="set-h">Color de acento</h3><div class="accents" id="accents">'+ACCENTS.map(a=>'<button data-a="'+a[0]+'" aria-label="'+a[1]+'" title="'+a[1]+'" aria-pressed="'+(P.get("accent","original")===a[0])+'" style="background:'+(a[2]?'linear-gradient(135deg,'+a[2]+' 50%,'+a[3]+' 50%)':'linear-gradient(135deg,#5856D6 50%,#A5572C 50%)')+'"></button>').join("")+'</div><p class="acc-name" id="accName">'+ACCENTS.find(a=>a[0]===P.get("accent","original"))[1]+'</p>'+
   tg("tCont",P.get("cont",false),"Lectura continua","Al llegar al final, sigue el próximo capítulo sin tocar nada")+
   tg("tPar",P.get("par",false),"Mostrar también en inglés","King James (1769) debajo de cada versículo")+
-  syncHTML();
+  remindHTML()+syncHTML();
+}
+/* ---------- recordatorio diario ----------
+   Una página web no puede notificar a una hora fija sin un servidor (push), así que el
+   recordatorio es un evento repetido todos los días en el calendario del teléfono. */
+const APP_URL="https://margrod.github.io/Biblia/";
+function remindHTML(){
+  return '<div class="acct remind"><h3 class="set-h">Recordatorio diario</h3><p>Tu calendario te avisa todos los días a la hora que elijas, aunque la app esté cerrada.</p>'+
+    '<label class="rtime"><span>Hora</span><input type="time" id="rTime" value="'+P.get("remindAt","07:00")+'"></label>'+
+    '<div class="rbtns"><button class="gbtn" id="rGoogle">Google Calendar</button><button class="gbtn" id="rIcs">iPhone u otro</button></div></div>';
+}
+function remindStart(){ // mañana a la hora elegida, en hora local
+  const [h,m]=P.get("remindAt","07:00").split(":").map(Number);const d=new Date();d.setDate(d.getDate()+1);d.setHours(h,m,0,0);
+  const p=n=>String(n).padStart(2,"0"),f=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";
+  return [f(d),f(new Date(d.getTime()+15*6e4))];
+}
+const R_TITLE="Leer la Biblia",R_TEXT="Un momento con la Palabra. Abre la Santa Biblia: "+APP_URL;
+function remindGoogle(){
+  const [a,z]=remindStart();let tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+  const q=new URLSearchParams({action:"TEMPLATE",text:R_TITLE,details:R_TEXT,dates:a+"/"+z,recur:"RRULE:FREQ=DAILY"});if(tz)q.set("ctz",tz);
+  window.open("https://calendar.google.com/calendar/render?"+q.toString(),"_blank");
+}
+function remindIcs(){
+  const [a,z]=remindStart(),now=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Santa Biblia//ES","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+    "UID:recordatorio-"+Date.now()+"@margrod.github.io","DTSTAMP:"+now,"DTSTART:"+a,"DTEND:"+z,"RRULE:FREQ=DAILY",
+    "SUMMARY:"+R_TITLE,"DESCRIPTION:"+R_TEXT,"URL:"+APP_URL,
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+R_TITLE,"TRIGGER:PT0M","END:VALARM","END:VEVENT","END:VCALENDAR"].map(l=>l.replace(/(.{70})(?=.)/g,"$1\r\n ")).join("\r\n"); // líneas ≤75 (norma iCalendar)
+  const url=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));
+  const l=document.createElement("a");l.href=url;l.download="recordatorio-biblia.ics";document.body.appendChild(l);l.click();l.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+  toast("Abre el archivo para agregarlo a tu calendario");
 }
 const G_LOGO='<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
 function syncHTML(){
@@ -797,6 +844,9 @@ function openSettings(){
     el.querySelector("#accents").onclick=e=>{const b=e.target.closest("button");if(!b)return;P.set("accent",b.dataset.a);applyPrefs();el.querySelectorAll("#accents button").forEach(x=>x.setAttribute("aria-pressed",x===b));el.querySelector("#accName").textContent=b.title};
     el.querySelector("#tCont").onclick=e=>{const on=!P.get("cont",false);P.set("cont",on);e.currentTarget.setAttribute("aria-checked",on);if(cur)route()};
     el.querySelector("#tPar").onclick=async e=>{const on=!P.get("par",false);P.set("par",on);e.currentTarget.setAttribute("aria-checked",on);if(on)await loadKJV();if(cur)rerenderReaderKeep()};
+    el.querySelector("#rTime").onchange=e=>{if(e.target.value)P.set("remindAt",e.target.value)};
+    el.querySelector("#rGoogle").onclick=remindGoogle;
+    el.querySelector("#rIcs").onclick=remindIcs;
     bindSync(el);
     // se descarga Firebase al abrir Ajustes, así el toque en "Iniciar sesión" abre la ventana de Google al instante
     if(FIREBASE_CONFIG&&!sync.user)loadFirebase().catch(()=>{});
@@ -1124,7 +1174,7 @@ function renderFinder(){
     if(cur)h+='<button class="wide-btn soft" data-fgo="#/'+BOOKS[cur.b].slug+'/'+cur.c+'">Volver a '+esc(chName(cur.b,cur.c))+'</button>';
     h+='<div class="seg" role="tablist" id="fseg"><button data-ftst="at" role="tab" aria-selected="'+(testament==="at")+'">Antiguo Testamento</button><button data-ftst="nt" role="tab" aria-selected="'+(testament==="nt")+'">Nuevo Testamento</button></div>';
     h+='<div class="bookchips"'+(finderDir?' style="animation:'+(finderDir>0?'slideL':'slideR')+' .25s ease both"':'')+'>';finderDir=0;
-    BOOKS.forEach((b,i)=>{if(b[1]===testament)h+='<button data-fb="'+i+'"'+(cur&&cur.b===i?' class="cur"':'')+'>'+b[0]+'</button>'});h+='</div>';
+    BOOKS.forEach((b,i)=>{if(b[1]===testament)h+='<button data-fb="'+i+'"'+((cur&&cur.b===i)||b[0].length>=16?' class="'+[cur&&cur.b===i?"cur":"",b[0].length>=16?"long":""].join(" ").trim()+'"':'')+'>'+b[0]+'</button>'});h+='</div>';
   }else if(!fstate.c){
     const b=fstate.b,n=DATA[b].length;
     h+='<div class="f-nav"><button class="f-back" data-fback="1">'+backIco+'Libros</button></div><h3 style="font-size:30px;font-weight:900;margin:0 0 4px">'+BOOKS[b][0]+'</h3><p class="crumbs">Elige un capítulo</p><div class="grid">';
@@ -1274,16 +1324,27 @@ function renderSaved(sub){
   let items=[],empty="";
   if(sub==="resaltados"){items=Object.entries(S.hl).filter(e=>e[1].c&&txt(e[0])).sort((a,b)=>b[1].t-a[1].t).map(([k,x])=>{const u=unK(k);return '<button class="res" data-go="'+go(k)+'"><b><span class="cdot" style="background:'+DOTC[x.c]+'"></span>'+esc(refOf(u.b,u.c,u.v))+'</b><p>'+esc(txt(k))+'</p></button>'});
     empty="Toca un versículo mientras lees y elige un color para resaltarlo."}
-  if(sub==="notas"){items=Object.entries(S.notes).filter(e=>e[1].x&&txt(e[0])).sort((a,b)=>b[1].t-a[1].t).map(([k,x])=>{const u=unK(k);const ref=x.r?refRange(u.b,u.c,x.r):refOf(u.b,u.c,u.v);return '<button class="res" data-go="'+go(k)+'"><b>'+esc(ref)+'</b><p>'+esc(txt(k))+'</p><div class="note">'+esc(x.x)+'</div></button>'});
+  if(sub==="notas"){items=Object.entries(S.notes).filter(e=>e[1].x&&txt(e[0])).sort((a,b)=>b[1].t-a[1].t).map(([k,x])=>{const u=unK(k);const ref=x.r?refRange(u.b,u.c,x.r):refOf(u.b,u.c,u.v);return '<button class="res" data-go="'+go(k)+'" data-s="'+esc(norm(ref+" "+x.x+" "+txt(k)))+'"><b>'+esc(ref)+'</b><p>'+esc(txt(k))+'</p><div class="note">'+esc(x.x)+'</div></button>'});
     empty="Toca un versículo y elige Nota para escribir lo que te dice."}
   if(sub==="marcadores"){items=Object.entries(S.bm).filter(e=>e[1].on&&txt(e[0])).sort((a,b)=>b[1].t-a[1].t).map(([k])=>{const u=unK(k);return '<button class="res" data-go="'+go(k)+'"><b>'+esc(refOf(u.b,u.c,u.v))+'</b><p>'+esc(txt(k))+'</p></button>'});
     empty="Toca un versículo y elige Marcador para guardarlo aquí."}
   if(sub==="historial"){items=Object.entries(S.hist).filter(e=>{const [b,c]=e[0].split("_").map(Number);return DATA[b]&&DATA[b][c-1]}).sort((a,b)=>b[1].t-a[1].t).map(([k,x])=>{const [b,c]=k.split("_").map(Number);return '<button class="row" data-go="#/'+BOOKS[b].slug+'/'+c+'"><span class="name">'+esc(chName(b,c))+'</span><span class="meta">'+relTime(x.t)+'</span>'+chev+'</button>'});
     empty="Aquí aparecerán los capítulos que vayas leyendo."}
   const anim=savedDir?' style="animation:'+(savedDir>0?'slideL':'slideR')+' .25s ease both"':'';savedDir=0;
-  h+='<div id="savedBody"'+anim+'>'+(items.length?'<div class="list">'+items.join("")+'</div>':'<div class="empty">'+empty+'</div>')+'</div>';
+  const nsearch=sub==="notas"&&items.length>1?'<div class="f-input nsearch">'+searchIco+'<input id="nq" type="search" placeholder="Buscar en tus notas" autocomplete="off" enterkeyhint="search" aria-label="Buscar en tus notas"><button class="clear" id="nqc" hidden aria-label="Borrar búsqueda">✕</button></div>':'';
+  h+='<div id="savedBody"'+anim+'>'+nsearch+(items.length?'<div class="list" id="savedList">'+items.join("")+'</div><div class="empty" id="nqEmpty" hidden></div>':'<div class="empty">'+empty+'</div>')+'</div>';
   h+='<p class="foot" style="padding-top:18px">Desliza a los lados para cambiar de sección</p>';
   $("app").innerHTML=h+'</div>';scrollTo(0,0);
+  if(nsearch)bindNoteSearch();
+}
+/* buscador de notas: filtra en el sitio (sin volver a pintar) para no perder el teclado */
+function bindNoteSearch(){
+  const q=$("nq"),c=$("nqc"),list=$("savedList"),none=$("nqEmpty");
+  const run=()=>{const n=norm(q.value.trim());let shown=0;
+    list.querySelectorAll(".res").forEach(r=>{const ok=!n||r.dataset.s.includes(n);r.hidden=!ok;if(ok)shown++});
+    c.hidden=!q.value;list.hidden=!shown;none.hidden=!!shown;
+    if(!shown)none.textContent="Ninguna nota tiene “"+q.value.trim()+"”."};
+  q.oninput=run;c.onclick=()=>{q.value="";run();q.focus()};
 }
 
 /* ---------- navegación ---------- */
@@ -1362,7 +1423,23 @@ start().catch(err=>{console.error(err);$("app").innerHTML='<div class="loading">
 })();
 
 /* ---------- modo sin conexión (service worker) ---------- */
-if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!/claude/.test(location.hostname)){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+/* Aviso de versión nueva: el SW nuevo se instala en segundo plano (skipWaiting + claim) y al
+   tomar el control dispara "controllerchange". Si ya había uno antes, esta página es la versión
+   vieja: se ofrece recargar. También se busca actualización cada vez que se vuelve a la app. */
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!/claude/.test(location.hostname)){addEventListener("load",()=>{
+  const sw=navigator.serviceWorker,had=!!sw.controller;
+  sw.register("sw.js").then(reg=>{
+    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")reg.update().catch(()=>{})});
+  }).catch(()=>{});
+  sw.addEventListener("controllerchange",()=>{
+    if(!had||document.getElementById("upd"))return;
+    const b=document.createElement("div");b.className="upd";b.id="upd";b.setAttribute("role","status");
+    b.innerHTML='<span>Hay una versión nueva</span><button id="updGo">Actualizar</button><button class="x" id="updX" aria-label="Más tarde">✕</button>';
+    document.body.appendChild(b);requestAnimationFrame(()=>b.classList.add("show"));
+    b.querySelector("#updGo").onclick=()=>location.reload();
+    b.querySelector("#updX").onclick=()=>b.remove();
+  });
+})}
 
 </script>
 </body>
