@@ -1,6 +1,6 @@
 // Guarda la Biblia en el teléfono para que funcione sin internet.
-// 6f18acc30f lo reemplaza scripts/build.py con un hash del index.html: cada build nuevo actualiza los teléfonos.
-const CACHE = "biblia-6f18acc30f";
+// d9d7914d31 lo reemplaza scripts/build.py con un hash del index.html: cada build nuevo actualiza los teléfonos.
+const CACHE = "biblia-d9d7914d31";
 const FILES = ["./", "./index.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png", "./maskable-512.png",
   "./apple-touch-icon.png", "./favicon.png", "./privacidad.html"];

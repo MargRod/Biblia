@@ -609,7 +609,10 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
    Cada usuario tiene UN documento users/{uid} = {s: estado, t: fecha}. Antes de escribir
    se lee y se junta con mergeState, así dos teléfonos no se pisan.
    Firebase solo se descarga si hay FIREBASE_CONFIG y el usuario abre Ajustes o ya inició sesión. */
-const FIREBASE_CONFIG=null; // ← pegar aquí el firebaseConfig de la consola de Firebase
+// firebaseConfig del proyecto "Biblia" (biblia-216ae). No es secreto: la seguridad la dan las reglas de Firestore.
+const FIREBASE_CONFIG={apiKey:"AIzaSyCahqs3vnRXnHsGiQmaOW62tdSLacyqUaQ",authDomain:"biblia-216ae.firebaseapp.com",
+  projectId:"biblia-216ae",storageBucket:"biblia-216ae.firebasestorage.app",messagingSenderId:"391815533724",
+  appId:"1:391815533724:web:a21dffa62eba4ff156c959"};
 const FB_URL="https://www.gstatic.com/firebasejs/12.19.0/firebase-";
 let fb=null,fbP=null;
 function loadFirebase(){
